@@ -4,6 +4,7 @@
   "description": "Create an imprecisely-timed closed captions file based on a text transcript",
   "main": "index.js",
   "scripts": {
+    "build": "browserify -o demo/bundle.js ./index.js",
     "test": "node tests/index.js"
   },
   "repository": {
@@ -20,8 +21,12 @@
   },
   "homepage": "https://github.com/goatandsheep/transcript-cc#readme",
   "devDependencies": {
+    "browserify": "^17.0.0",
     "codecov": "^3.8.1",
     "jest": "^26.6.3",
     "xo": "^0.38.2"
+  },
+  "dependencies": {
+    "node-webvtt": "^1.9.3"
   }
 }
