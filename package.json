@@ -1,6 +1,6 @@
 {
   "name": "transcript-cc",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create an imprecisely-timed closed captions file based on a text transcript",
   "main": "index.js",
   "scripts": {
