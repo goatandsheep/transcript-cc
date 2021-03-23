@@ -1,4 +1,4 @@
-
+const webvtt = require('node-webvtt')
 /**
  * 
  */
@@ -57,8 +57,9 @@ const TranscriptExporter = function(data, timeString) {
         segCounter++
     }
     output = output.concat(segCues)
+    console.log('output', output)
 
-    return output
+    return webvtt.compile({valid: true, cues: output})
 
 }
 
