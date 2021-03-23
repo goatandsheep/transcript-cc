@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/turretcss/dist/turretcss.min.css" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment-with-locales.min.js"
+        integrity="sha512-qSnlnyh7EcD3vTqRoSP4LYsy2yVuqqmnkM9tW4dWo6xvAoxuVXyM36qZK54fyCmHoY1iKi9FJAUZrlPqmGNXFw=="
+        crossorigin="anonymous"></script>
+    <title>Transcript to Caption Generator</title>
+</head>
+
+<body class="container">
+    <h1>Transcript to caption generator</h1>
+    <p>Create an imprecise WebVTT caption file based on </p>
+    <form>
+        <p class="field">
+            <label for="format-input">Total Video length</label>
+            <input id="format-input" type="time" oninput="changeInput(event)" step="1" required value="00:00:00" max="11:59:59">
+            <span>(Ignore the AM/PM or set to AM)</span>
+        </p>
+        <p class="field">
+            <label for="format-input">Transcript text</label>
+            <textarea id="format-input" placeholder="Paste transcript text here" type="text" oninput="changeInput(event)" value="dddd, MMMM DD, YYYY, hh:mm:ss a"></textarea>
+        </p>
+    </form>
+    <p class="field">
+        <label for="date-output">Formatted captions</label>
+        <textarea onclick="copyOutput()" readonly id="cc-output" placeholder="WebVTT Output will be here"></textarea>
+        <span>Click the output to copy</span> 
+    </p>
+    <script>
+        function changeInput(event) {
+            const words = data.results[i].alternatives[0].transcript.split(' ')
+            let cues = []
+            let nextCue = words[0]
+            let line1 = true
+            // create cues
+            for (let j = 1, wordsLen = words.length; j < wordsLen; j++) {
+                if (line1) {
+                    let temp = `${nextCue} ${words[j]}`
+                    if (temp.length <= wrapSize) {
+                        nextCue = temp
+                    } else {
+                        nextCue = `${nextCue}\\n${words[j]}`
+                        line1 = false
+                    }
+                } else {
+                    let temp = `${nextCue} ${words[j]}`
+                    if (temp.length <= cueSize) {
+                        nextCue = temp
+                    } else {
+                        cues.push(nextCue)
+                        nextCue = words[j]
+                        line1 = true
+                    }
+                }
+            }
+            cues.push(nextCue)
+            const cuesNum = cues.length
+            const cueTime = segLen / cuesNum
+            let segCues = []
+            for (let cueId = 0; cueId < cuesNum; cueId++) {
+                segCues.push({
+                    text: cues[cueId].trim(),
+                    start: segTimeCount + cueId * cueTime,
+                    end: segTimeCount + (cueId + 1) * cueTime,
+                    identifier: `${segCounter}`,
+                    styles: ''
+                })
+                segCounter++
+            }
+            output = output.concat(segCues)
+            segTimeCount += segLen
+            
+            const val = document.getElementById('format-input').value
+            document.getElementById('cc-output').value = now.format(val)
+        }
+        function copyOutput(event) {
+            const copyText = document.getElementById('cc-output');
+            copyText.select()
+            copyText.setSelectionRange(0, 999999)
+
+            document.execCommand('copy')
+        }
+    </script>
+</body>
+
+</html>

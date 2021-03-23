@@ -1,0 +1,27 @@
+{
+  "name": "transcript-cc",
+  "version": "1.0.0",
+  "description": "Create an imprecisely-timed closed captions file based on a text transcript",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goatandsheep/transcript-cc.git"
+  },
+  "keywords": [
+    "captions"
+  ],
+  "author": "Kemal Ahmed <goatandsheep@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/goatandsheep/transcript-cc/issues"
+  },
+  "homepage": "https://github.com/goatandsheep/transcript-cc#readme",
+  "devDependencies": {
+    "codecov": "^3.8.1",
+    "jest": "^26.6.3",
+    "xo": "^0.38.2"
+  }
+}
