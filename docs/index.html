@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="stylesheet" href="https://unpkg.com/turretcss/dist/turretcss.min.css" crossorigin="anonymous" />
-    <script src="/bundle.js"></script>
+    <script src="./bundle.js"></script>
     <title>Transcript to Caption Generator</title>
 </head>
 
@@ -20,8 +20,8 @@
     </p>
     <form>
         <p class="field">
-            <label for="format-input">Total Video length</label>
-            <input id="format-input" type="time" oninput="changeInput(event)" step="1" required value="00:00:00" max="11:59:59">
+            <label for="time-input">Total Video length</label>
+            <input id="time-input" type="time" oninput="changeInput(event)" step="1" required value="00:00:00" max="11:59:59">
             <span>(Ignore the AM/PM or set to AM)</span>
         </p>
         <p class="field">
@@ -36,50 +36,10 @@
     </p>
     <script>
         function changeInput(event) {
-            const words = data.results[i].alternatives[0].transcript.split(' ')
-            let cues = []
-            let nextCue = words[0]
-            let line1 = true
-            // create cues
-            for (let j = 1, wordsLen = words.length; j < wordsLen; j++) {
-                if (line1) {
-                    let temp = `${nextCue} ${words[j]}`
-                    if (temp.length <= wrapSize) {
-                        nextCue = temp
-                    } else {
-                        nextCue = `${nextCue}\\n${words[j]}`
-                        line1 = false
-                    }
-                } else {
-                    let temp = `${nextCue} ${words[j]}`
-                    if (temp.length <= cueSize) {
-                        nextCue = temp
-                    } else {
-                        cues.push(nextCue)
-                        nextCue = words[j]
-                        line1 = true
-                    }
-                }
-            }
-            cues.push(nextCue)
-            const cuesNum = cues.length
-            const cueTime = segLen / cuesNum
-            let segCues = []
-            for (let cueId = 0; cueId < cuesNum; cueId++) {
-                segCues.push({
-                    text: cues[cueId].trim(),
-                    start: segTimeCount + cueId * cueTime,
-                    end: segTimeCount + (cueId + 1) * cueTime,
-                    identifier: `${segCounter}`,
-                    styles: ''
-                })
-                segCounter++
-            }
-            output = output.concat(segCues)
-            segTimeCount += segLen
-            
-            const val = document.getElementById('format-input').value
-            document.getElementById('cc-output').value = now.format(val)
+            console.log('change')
+            const textVal = document.getElementById('format-input').value
+            const timeVal = document.getElementById('time-input').value
+            document.getElementById('cc-output').value = TranscriptExporter(textVal,timeVal)
         }
         function copyOutput(event) {
             const copyText = document.getElementById('cc-output');
